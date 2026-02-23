@@ -10,34 +10,45 @@ import psutil
 import subprocess
 import webbrowser
 import win32clipboard
-import win32con
 
+def choose_serial_port():
+    default_port = "COM3"
+    port = input(f"Arduino port:").strip()
+    if not port:
+        port = default_port
+    try:
+        ser = serial.Serial(port, 9600, timeout=2)
+        print(f"Connected to Arduino on {port}")
+        return ser
+    except serial.SerialException:
+        print(f"Could not open {port}.c")
+        exit(1)
 
-# COM-Port anpassen
-ser = serial.Serial('COM3', 9600)
+# adjust com port
+ser = choose_serial_port()
 
 last_time = None
 last_track = None
 last_connection = None
 last_clipboard = None
 last_check = 0
-CHECK_INTERVAL = 5  # Sekunden
+CHECK_INTERVAL = 5  # seconds
 
-media_manager = None  # globales MediaManager-Objekt
+media_manager = None  # global MediaManager-Object
 
 firefox = webbrowser.Mozilla("firefox.exe")
 
 def sanitize(text):
-    """Entfernt Sonderzeichen"""
+    """removes special characters from text"""
     return re.sub(r"[^a-zA-Z0-9 \-:]", "", text or "")
 
 def send_serial_line(prefix: str, text: str):
-    """Sichere Ausgabe an Arduino"""
+    """secure output to Arduino"""
     if text and text.strip():
-        #prefix, wie z.B. "TIME:", damit der arduino weiß, für was das signal ist
+        #prefix, e.g. "TIME:", so Arduino can identify the signal
         line = f"{prefix}:{text.strip()}\n"
         ser.write(line.encode("ascii", errors="ignore"))
-        print(f"[SENT] {line.strip()}")  # sendet rückmeldung
+        print(f"[SENT] {line.strip()}")  # sending feedback
 
 def get_clipboard_text():
     try:
@@ -52,7 +63,7 @@ def get_clipboard_text():
         return None
 
 def get_current_time():
-    """Nur neue Minute senden"""
+    """only send new time"""
     global last_time
     now = datetime.now()
     current_time = now.strftime("%H:%M")
@@ -61,7 +72,7 @@ def get_current_time():
         last_time = current_time
 
 def internet_status():
-    """Status prüfen"""
+    """check status"""
     try:
         socket.create_connection(("8.8.8.8", 53), timeout=2)
         online = True
@@ -81,7 +92,7 @@ def internet_status():
         return "Connected (unknown)"
 
 def send_connection_status():
-    """Nur senden, wenn sich Status ändert"""
+    """only send, if status changes"""
     global last_connection, last_check
     if time.time() - last_check < CHECK_INTERVAL:
         return
@@ -91,9 +102,9 @@ def send_connection_status():
     if status != last_connection:
         send_serial_line("CONNECTION", status)
         last_connection = status
-#Media-player auslesen, um track-namen zu bekommen
+#read media manager to get track name
 async def init_media_manager():
-    """Einmalige Initialisierung des MediaManagers"""
+    """initialize Windows media manager"""
     global media_manager
     if media_manager is None:
         try:
@@ -103,7 +114,7 @@ async def init_media_manager():
             media_manager = None
 
 async def get_media_info():
-    """Aktuellen Track holen"""
+    """get current track"""
     global media_manager
     if media_manager is None:
         await init_media_manager()
@@ -118,11 +129,11 @@ async def get_media_info():
             return f"{title} - {artist}"
     except Exception as e:
         print("Media error:", e)
-        media_manager = None  # beim Fehler erneut init versuchen
+        media_manager = None
     return None
 
 async def media_loop():
-    """Track regelmäßig senden"""
+    """continue sending track"""
     global last_track
     await init_media_manager()
     while True:
@@ -144,27 +155,27 @@ async def clipboard_loop():
         await asyncio.sleep(0.4)  # non-blocking
 
 def main_loop():
-    """Hauptloop"""
+    """main loop"""
     loop = asyncio.get_event_loop()
     asyncio.ensure_future(media_loop())
     asyncio.ensure_future(clipboard_loop())
 
-    # --- Initiale Statuswerte senden ---
+    # --- Send status initially ---
     time.sleep(2)
-    get_current_time()                # Uhrzeit einmal senden
-    send_connection_status()          # Internetstatus einmal senden
-    send_serial_line("TRACK", "Nothing Playing...")  # Track einmal senden
+    get_current_time()
+    send_connection_status()
+    send_serial_line("TRACK", "Nothing Playing...")
 
     while True:
-        # 1. Zeit aktualisieren
+        # 1. time
         get_current_time()
-        # 2. Verbindung prüfen
+        # 2. connection
         send_connection_status()
 
-        # 3. Befehle vom Arduino empfangen
+        # 3. receive signals
         if ser.in_waiting:
             line = ser.readline().decode(errors="ignore").strip()
-            print(f"[RECV] {line}")  # rückmeldung an konsole
+            print(f"[RECV] {line}")  # feedback
             if line == "PLAY":
                 keyboard.send("play/pause media")
             elif line == "SKIP":
@@ -188,7 +199,7 @@ def main_loop():
                 subprocess.Popen(["explorer.exe", f"shell:AppsFolder\\{appid}"])
             elif line == "YOUTUBE":
                 firefox.open("youtube.com")
-        loop.run_until_complete(asyncio.sleep(0.1))  # kleiner Delay
+        loop.run_until_complete(asyncio.sleep(0.1))  # small delay
 
 
 if __name__ == "__main__":
