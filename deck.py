@@ -10,12 +10,15 @@ import psutil
 import subprocess
 import webbrowser
 import win32clipboard
+from win32gui import GetWindowText, GetForegroundWindow
+
+
 
 def choose_serial_port():
     default_port = "COM3"
-    port = input(f"Arduino port:").strip()
-    if not port:
-        port = default_port
+    #port = input(f"Arduino port:").strip()
+    #if not port:
+    port = default_port
     try:
         ser = serial.Serial(port, 9600, timeout=2)
         print(f"Connected to Arduino on {port}")
@@ -31,6 +34,7 @@ last_time = None
 last_track = None
 last_connection = None
 last_clipboard = None
+last_activeWindow = None
 last_check = 0
 CHECK_INTERVAL = 5  # seconds
 
@@ -70,9 +74,8 @@ def get_current_time():
     if last_time is None or current_time != last_time:
         send_serial_line("TIME", current_time)
         last_time = current_time
-
+"""
 def internet_status():
-    """check status"""
     try:
         socket.create_connection(("8.8.8.8", 53), timeout=2)
         online = True
@@ -90,9 +93,11 @@ def internet_status():
         return "Ethernet"
     else:
         return "Connected (unknown)"
+"""
 
+"""
 def send_connection_status():
-    """only send, if status changes"""
+    #only send, if status changes
     global last_connection, last_check
     if time.time() - last_check < CHECK_INTERVAL:
         return
@@ -102,6 +107,7 @@ def send_connection_status():
     if status != last_connection:
         send_serial_line("CONNECTION", status)
         last_connection = status
+        """
 #read media manager to get track name
 async def init_media_manager():
     """initialize Windows media manager"""
@@ -154,23 +160,36 @@ async def clipboard_loop():
                 last_clipboard = text
         await asyncio.sleep(0.4)  # non-blocking
 
+async def active_window_loop():
+    global last_activeWindow
+    while True:
+        name = GetWindowText(GetForegroundWindow())
+        if name and name != last_activeWindow:
+            clean = sanitize(name)
+            if clean:
+                print(clean)
+                send_serial_line("WINDOW", clean[:18])
+                last_activeWindow = name
+
 def main_loop():
     """main loop"""
     loop = asyncio.get_event_loop()
     asyncio.ensure_future(media_loop())
     asyncio.ensure_future(clipboard_loop())
+    asyncio.ensure_future(active_window_loop())
 
     # --- Send status initially ---
     time.sleep(2)
     get_current_time()
-    send_connection_status()
+
+    #send_connection_status()
     send_serial_line("TRACK", "Nothing Playing...")
 
     while True:
         # 1. time
         get_current_time()
         # 2. connection
-        send_connection_status()
+        #send_connection_status()
 
         # 3. receive signals
         if ser.in_waiting:
@@ -199,6 +218,8 @@ def main_loop():
                 subprocess.Popen(["explorer.exe", f"shell:AppsFolder\\{appid}"])
             elif line == "YOUTUBE":
                 firefox.open("youtube.com")
+            else:
+                print("Unknown command:", line)
         loop.run_until_complete(asyncio.sleep(0.1))  # small delay
 
 
