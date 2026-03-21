@@ -93,9 +93,8 @@ def internet_status():
         return "Ethernet"
     else:
         return "Connected (unknown)"
-"""
 
-"""
+
 def send_connection_status():
     #only send, if status changes
     global last_connection, last_check
@@ -107,7 +106,9 @@ def send_connection_status():
     if status != last_connection:
         send_serial_line("CONNECTION", status)
         last_connection = status
-        """
+"""
+
+
 #read media manager to get track name
 async def init_media_manager():
     """initialize Windows media manager"""
@@ -167,9 +168,12 @@ async def active_window_loop():
         if name and name != last_activeWindow:
             clean = sanitize(name)
             if clean:
-                print(clean)
                 send_serial_line("WINDOW", clean[:18])
                 last_activeWindow = name
+
+        # CRITICAL FIX: Give control back to the event loop
+        # 0.5 seconds is usually plenty fast for detecting window changes
+        await asyncio.sleep(0.5)
 
 def main_loop():
     """main loop"""
@@ -181,7 +185,6 @@ def main_loop():
     # --- Send status initially ---
     time.sleep(2)
     get_current_time()
-
     #send_connection_status()
     send_serial_line("TRACK", "Nothing Playing...")
 
@@ -218,8 +221,6 @@ def main_loop():
                 subprocess.Popen(["explorer.exe", f"shell:AppsFolder\\{appid}"])
             elif line == "YOUTUBE":
                 firefox.open("youtube.com")
-            else:
-                print("Unknown command:", line)
         loop.run_until_complete(asyncio.sleep(0.1))  # small delay
 
 
