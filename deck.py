@@ -10,12 +10,15 @@ import psutil
 import subprocess
 import webbrowser
 import win32clipboard
+from win32gui import GetWindowText, GetForegroundWindow
+
+
 
 def choose_serial_port():
     default_port = "COM3"
-    port = input(f"Arduino port:").strip()
-    if not port:
-        port = default_port
+    #port = input(f"Arduino port:").strip()
+    #if not port:
+    port = default_port
     try:
         ser = serial.Serial(port, 9600, timeout=2)
         print(f"Connected to Arduino on {port}")
@@ -31,8 +34,7 @@ last_time = None
 last_track = None
 last_connection = None
 last_clipboard = None
-last_check = 0
-CHECK_INTERVAL = 5  # seconds
+last_activeWindow = None
 
 media_manager = None  # global MediaManager-Object
 
@@ -72,7 +74,6 @@ def get_current_time():
         last_time = current_time
 
 def internet_status():
-    """check status"""
     try:
         socket.create_connection(("8.8.8.8", 53), timeout=2)
         online = True
@@ -91,17 +92,17 @@ def internet_status():
     else:
         return "Connected (unknown)"
 
-def send_connection_status():
-    """only send, if status changes"""
-    global last_connection, last_check
-    if time.time() - last_check < CHECK_INTERVAL:
-        return
-    last_check = time.time()
+async def connection_loop():
+    global last_connection
+    while True:
+        status = internet_status()
+        if status != last_connection:
+            send_serial_line("CONNECTION", status)
+            last_connection = status
 
-    status = internet_status()
-    if status != last_connection:
-        send_serial_line("CONNECTION", status)
-        last_connection = status
+        # Rarely check connection (e.g., every 30 seconds)
+        await asyncio.sleep(30)
+
 #read media manager to get track name
 async def init_media_manager():
     """initialize Windows media manager"""
@@ -126,7 +127,7 @@ async def get_media_info():
             info = await current_session.try_get_media_properties_async()
             title = sanitize(info.title or "Unknown")
             artist = sanitize(info.artist or "Unknown")
-            return f"{title} - {artist}"
+            return f"{title}|{artist}"
     except Exception as e:
         print("Media error:", e)
         media_manager = None
@@ -154,23 +155,37 @@ async def clipboard_loop():
                 last_clipboard = text
         await asyncio.sleep(0.4)  # non-blocking
 
+async def active_window_loop():
+    global last_activeWindow
+    while True:
+        name = GetWindowText(GetForegroundWindow())
+        if name and name != last_activeWindow:
+            clean = sanitize(name)
+            if clean:
+                send_serial_line("WINDOW", clean[:25])
+                last_activeWindow = name
+
+        # CRITICAL FIX: Give control back to the event loop
+        # 0.5 seconds is usually plenty fast for detecting window changes
+        await asyncio.sleep(0.5)
+
 def main_loop():
     """main loop"""
     loop = asyncio.get_event_loop()
     asyncio.ensure_future(media_loop())
+    asyncio.ensure_future(active_window_loop())
+    asyncio.ensure_future(connection_loop())
     asyncio.ensure_future(clipboard_loop())
-
     # --- Send status initially ---
     time.sleep(2)
     get_current_time()
-    send_connection_status()
-    send_serial_line("TRACK", "Nothing Playing...")
+    #send_connection_status()
 
     while True:
         # 1. time
         get_current_time()
         # 2. connection
-        send_connection_status()
+        #send_connection_status()
 
         # 3. receive signals
         if ser.in_waiting:
@@ -195,8 +210,7 @@ def main_loop():
             elif line == "EXPLORER":
                 subprocess.Popen(["explorer.exe"])
             elif line == "DEEZER":
-                appid = "Deezer.62021768415AF_q7m17pa7q8kj0!Deezer.Music"
-                subprocess.Popen(["explorer.exe", f"shell:AppsFolder\\{appid}"])
+                subprocess.Popen([r"C:\Users\User\AppData\Local\Programs\deezer-desktop\Deezer.exe"])
             elif line == "YOUTUBE":
                 firefox.open("youtube.com")
         loop.run_until_complete(asyncio.sleep(0.1))  # small delay

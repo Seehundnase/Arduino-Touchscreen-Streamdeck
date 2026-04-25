@@ -1,5 +1,5 @@
-(['C:\\Users\\User\\PycharmProjects\\Arduino-Touchscreen-Streamdeck\\deck.py'],
- ['C:\\Users\\User\\PycharmProjects\\Arduino-Touchscreen-Streamdeck'],
+(['C:\\users\\user\\PycharmProjects\\Arduino-Touchscreen-Streamdeck\\deck.py'],
+ ['C:\\users\\user\\PycharmProjects\\Arduino-Touchscreen-Streamdeck'],
  [],
  [('C:\\Users\\User\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\freetype\\__pyinstaller',
    0),
@@ -601,10 +601,6 @@
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\multiprocessing\\__init__.py',
    'PYMODULE'),
-  ('stringprep',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\stringprep.py',
-   'PYMODULE'),
   ('_py_abc',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\_py_abc.py',
@@ -612,6 +608,10 @@
   ('tracemalloc',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\tracemalloc.py',
+   'PYMODULE'),
+  ('stringprep',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\stringprep.py',
    'PYMODULE'),
   ('webbrowser',
    'C:\\Program '
@@ -960,6 +960,9 @@
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\DLLs\\_queue.pyd',
    'EXTENSION'),
+  ('win32\\win32gui.pyd',
+   'C:\\Users\\User\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\win32\\win32gui.pyd',
+   'EXTENSION'),
   ('win32\\win32clipboard.pyd',
    'C:\\Users\\User\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\win32\\win32clipboard.pyd',
    'EXTENSION'),
@@ -1007,12 +1010,12 @@
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\DLLs\\libffi-7.dll',
    'BINARY'),
-  ('pywin32_system32\\pywintypes310.dll',
-   'C:\\Users\\User\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\pywin32_system32\\pywintypes310.dll',
-   'BINARY'),
   ('VCRUNTIME140_1.dll',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\VCRUNTIME140_1.dll',
+   'BINARY'),
+  ('pywin32_system32\\pywintypes310.dll',
+   'C:\\Users\\User\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\pywin32_system32\\pywintypes310.dll',
    'BINARY'),
   ('python3.dll',
    'C:\\Program '
@@ -1024,19 +1027,55 @@
  [],
  [],
  [('base_library.zip',
-   'C:\\Users\\User\\PycharmProjects\\Arduino-Touchscreen-Streamdeck\\build\\deck\\base_library.zip',
+   'C:\\users\\user\\PycharmProjects\\Arduino-Touchscreen-Streamdeck\\build\\deck\\base_library.zip',
    'DATA')],
- [('sre_parse',
+ [('sre_compile',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\sre_compile.py',
+   'PYMODULE'),
+  ('collections.abc',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\collections\\abc.py',
+   'PYMODULE'),
+  ('collections',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\collections\\__init__.py',
+   'PYMODULE'),
+  ('operator',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\operator.py',
+   'PYMODULE'),
+  ('io',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\io.py',
+   'PYMODULE'),
+  ('ntpath',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\ntpath.py',
+   'PYMODULE'),
+  ('os',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\os.py',
+   'PYMODULE'),
+  ('locale',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\locale.py',
+   'PYMODULE'),
+  ('sre_parse',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\sre_parse.py',
    'PYMODULE'),
-  ('genericpath',
+  ('types',
    'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\genericpath.py',
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\types.py',
    'PYMODULE'),
   ('_collections_abc',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\_collections_abc.py',
+   'PYMODULE'),
+  ('heapq',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\heapq.py',
    'PYMODULE'),
   ('keyword',
    'C:\\Program '
@@ -1046,6 +1085,26 @@
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\functools.py',
    'PYMODULE'),
+  ('abc',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\abc.py',
+   'PYMODULE'),
+  ('warnings',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\warnings.py',
+   'PYMODULE'),
+  ('traceback',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\traceback.py',
+   'PYMODULE'),
+  ('_weakrefset',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\_weakrefset.py',
+   'PYMODULE'),
+  ('copyreg',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\copyreg.py',
+   'PYMODULE'),
   ('stat',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\stat.py',
@@ -1053,42 +1112,6 @@
   ('codecs',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\codecs.py',
-   'PYMODULE'),
-  ('sre_constants',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\sre_constants.py',
-   'PYMODULE'),
-  ('linecache',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\linecache.py',
-   'PYMODULE'),
-  ('copyreg',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\copyreg.py',
-   'PYMODULE'),
-  ('locale',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\locale.py',
-   'PYMODULE'),
-  ('posixpath',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\posixpath.py',
-   'PYMODULE'),
-  ('traceback',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\traceback.py',
-   'PYMODULE'),
-  ('enum',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\enum.py',
-   'PYMODULE'),
-  ('reprlib',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\reprlib.py',
-   'PYMODULE'),
-  ('os',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\os.py',
    'PYMODULE'),
   ('encodings.zlib_codec',
    'C:\\Program '
@@ -1578,53 +1601,33 @@
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\encodings\\__init__.py',
    'PYMODULE'),
-  ('abc',
+  ('enum',
    'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\abc.py',
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\enum.py',
    'PYMODULE'),
-  ('ntpath',
+  ('sre_constants',
    'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\ntpath.py',
-   'PYMODULE'),
-  ('io',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\io.py',
-   'PYMODULE'),
-  ('collections.abc',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\collections\\abc.py',
-   'PYMODULE'),
-  ('collections',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\collections\\__init__.py',
-   'PYMODULE'),
-  ('sre_compile',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\sre_compile.py',
-   'PYMODULE'),
-  ('types',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\types.py',
-   'PYMODULE'),
-  ('warnings',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\warnings.py',
-   'PYMODULE'),
-  ('heapq',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\heapq.py',
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\sre_constants.py',
    'PYMODULE'),
   ('weakref',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\weakref.py',
    'PYMODULE'),
-  ('operator',
+  ('linecache',
    'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\operator.py',
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\linecache.py',
    'PYMODULE'),
-  ('_weakrefset',
+  ('reprlib',
    'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\_weakrefset.py',
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\reprlib.py',
+   'PYMODULE'),
+  ('genericpath',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\genericpath.py',
+   'PYMODULE'),
+  ('posixpath',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\posixpath.py',
    'PYMODULE'),
   ('re',
    'C:\\Program '
