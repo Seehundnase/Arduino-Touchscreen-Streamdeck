@@ -13,3 +13,5 @@ Note: This GitHub page is still WIP
 ## Images:
 ![Streamdeck Menu](https://github.com/user-attachments/assets/054f294d-318d-4169-9987-52559134dba5)
 ![Streamdeck Apps](https://github.com/user-attachments/assets/fd5cd778-0a7d-4867-8728-10e8935444c4)
+<img width="1495" height="1121" alt="IMG_1040" src="https://github.com/user-attachments/assets/b5e9fca3-88ca-4a2c-83a4-9e83fa97251f" />
+<img width="1317" height="988" alt="IMG_1039" src="https://github.com/user-attachments/assets/c4e1e61d-7675-424d-83e2-d34eebaaec7f" />
