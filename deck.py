@@ -16,6 +16,7 @@ from win32gui import GetWindowText, GetForegroundWindow
 
 def choose_serial_port():
     default_port = "COM3"
+    """IF YOU USE ANOTHER PORT THAN COM 3, EITER SET DEFAULT PORT OR USE BELOW FUNCTION SO IT WILL ASK EVERY TIME FOR THE PORT"""
     #port = input(f"Arduino port:").strip()
     #if not port:
     port = default_port
