@@ -11,7 +11,9 @@ Note: This GitHub page is still WIP
 * run either deck.py or deck.exe (in dist/)
 * to automatically start with system bootup you can put the script into the windows startup apps folder
 ## Images:
+
 Sreamdeck Home
-<img width="1495" height="1121" alt="IMG_1040" src="https://github.com/user-attachments/assets/b5e9fca3-88ca-4a2c-83a4-9e83fa97251f" />
-Streamdeck Apps Menu
 <img width="1317" height="988" alt="IMG_1039" src="https://github.com/user-attachments/assets/c4e1e61d-7675-424d-83e2-d34eebaaec7f" />
+
+Streamdeck Apps Menu
+<img width="1495" height="1121" alt="IMG_1040" src="https://github.com/user-attachments/assets/b5e9fca3-88ca-4a2c-83a4-9e83fa97251f" />
