@@ -63,24 +63,23 @@ Elegoo_GFX_Button deezerButton;
 Elegoo_GFX_Button discordButton;
 Elegoo_GFX_Button youtubeButton;
 Elegoo_GFX_Button closeClipButton;
-//variablen für den code
-//zeit-anzeige
-char buffer[16];
+//time buffer, unnecessary because it immediately gets drawn and never overwritten
+//char timeBuffer[16];
+
 int len;
 //menu-mamagement
+//0 = home screen
 //1 = appMenu
 //2 = clipboard
 unsigned int menuState = 0;
 
-char trackBuffer[200];  // Puffer für Trackname
+char trackBuffer[200];  //buffer for track name
 int trackLen = 0;
 char clipBuffer[200];
-
+char windowBuffer[30];
 
 void setup() {
-
-  Serial.begin(9600);  //serielle schnittstelle, um mit dem PC zu kommunizieren
-
+  Serial.begin(9600);//communication with python over serial
   tft.reset();
   //findet den richtigen treiber
   uint16_t identifier = tft.readID();
@@ -89,32 +88,38 @@ void setup() {
   } else {
     identifier = 0x9341;
   }
-  //touchscreen starten
   tft.begin(identifier);
   tft.setRotation(1);
-  tft.fillScreen(0x0000);  // Schwarz
+  tft.fillScreen(BLACK);
 
   //BUTTONS------------------------------------------
   //media buttons
   playButton.initButton(&tft, 195, 155, 80, 40, BROWN, ORANGE, WHITE, "Play", 2);
   skipButton.initButton(&tft, 260, 155, 40, 40, BROWN, ORANGE, WHITE, ">", 2);
   prevButton.initButton(&tft, 130, 155, 40, 40, BROWN, ORANGE, WHITE, "<", 2);
+
   //volume control buttons
   volupButton.initButton(&tft, 150, 210, 40, 40, DARKBLUE, DEEPBLUE, WHITE, "+", 2);
   voldownButton.initButton(&tft, 105, 210, 40, 40, DARKBLUE, DEEPBLUE, WHITE, "-", 2);
   volumeLabel.initButton(&tft, 195, 210, 40, 40, DARKBLUE, RED, WHITE, "X", 2);
+
   //Navigation Buttons
   appsMenu.initButton(&tft, 270, 210, 80, 40, BLACK, GREEN, BLACK, "Apps", 2);
   closeClipButton.initButton(&tft, 160, 155, 80, 40, BROWN, RED, WHITE, "Close", 2);
+
   //APPS buttons
-  browserButton.initButton(&tft, 60, 46, 100, 40, BLACK, ORANGE, BLACK, "Browser", 2);
-  explorerButton.initButton(&tft, 165, 91, 100, 40, BLACK, YELLOW, BLACK, "Files", 2);
-  deezerButton.initButton(&tft, 165, 46, 100, 40, BLACK, PURPLE, WHITE, "Deezer", 2);
-  youtubeButton.initButton(&tft, 60, 136, 100, 40, BLACK, RED, WHITE, "YouTube", 2);
-  discordButton.initButton(&tft, 165, 136, 100, 40, BLACK, BLUEPURPLE, WHITE, "Discord", 2);
-  calculator.initButton(&tft, 60, 91, 100, 40, BLACK, BLUE, WHITE, "Calc", 2);
-  //menü zeichnen
+  browserButton.initButton(&tft, 60, 110, 100, 40, BLACK, ORANGE, BLACK, "Browser", 2);
+  youtubeButton.initButton(&tft, 60, 155, 100, 40, BLACK, RED, WHITE, "YouTube", 2);
+
+  deezerButton.initButton(&tft, 165, 110, 100, 40, BLACK, PURPLE, WHITE, "Deezer", 2);
+  discordButton.initButton(&tft, 165, 155, 100, 40, BLACK, BLUEPURPLE, WHITE, "Discord", 2);
+
+  explorerButton.initButton(&tft, 265, 110, 90, 40, BLACK, YELLOW, BLACK, "Files", 2);
+  calculator.initButton(&tft, 265, 155, 90, 40, BLACK, BLUE, WHITE, "Calc", 2);
+
+  //draw home screen
   drawHomeScreen();
+  drawBottomControls();
 }
 void loop() {
 
@@ -153,9 +158,13 @@ void loop() {
 }
 
 void drawHomeScreen() {
+
+  tft.fillRect(0, 21, 320, 161, BLACK);
   menuState = 0;
-  //media
-  tft.fillRect(0, 21, 320, 219, BLACK);
+
+  drawActiveWindow();
+  drawMediaUI();//now playing text
+  //media controls
   tft.fillRoundRect(35, 130, 250, 50, 15, BEIGE);
   tft.setTextSize(2);
   tft.setCursor(40, 148);
@@ -164,31 +173,15 @@ void drawHomeScreen() {
   playButton.drawButton();
   skipButton.drawButton();
   prevButton.drawButton();
-
-  //Volume
-  tft.fillRoundRect(5, 185, 215, 50, 15, GREYBLUE);
-  tft.setCursor(10, 200);
-  tft.setTextColor(CYAN);
-  tft.print("Volume");
-  volupButton.drawButton();
-  voldownButton.drawButton();
-  volumeLabel.drawButton();
-  //APPS button
-  tft.fillRoundRect(225, 185, 90, 50, 15, GREYGREEN);
-  appsMenu.drawButton();
-  //trackname
-  tft.fillRoundRect(5, 21, 310, 104, 15, GREY);
-  drawWrappedText(trackBuffer + 6,
-                  10,   // abstand Links
-                  32,   // Start-Y
-                  310,  // rechtes Limit
-                  WHITE,
-                  2);  // Textgröße
 }
 
 void drawAppMenu() {
+  drawActiveWindow();
   menuState = 1;
-  tft.fillRoundRect(5, 21, 310, 159, 15, GREY);
+  tft.fillRoundRect(5, 60, 310, 120, 15, GREYGREEN);
+  tft.setTextColor(GREEN);
+  tft.setCursor(130, 65);
+  tft.print("Apps");
   browserButton.drawButton();
   deezerButton.drawButton();
   explorerButton.drawButton();
@@ -218,39 +211,99 @@ void handleSerial() {
     line[len] = 0;  // null-terminieren
 
     if (strncmp(line, "TIME:", 5) == 0) {
-      // Zeit updaten
+      //update time
       tft.fillRect(0, 0, 100, 21, BLACK);  // alte zeit überschreiben
       tft.setCursor(0, 0);
       tft.setTextSize(2);
       tft.setTextColor(WHITE);
       tft.print(line + 5);  // nur nach "TIME:"
-    } else if (strncmp(line, "WINDOW:", 7) == 0) {
-      // Zeit updaten
+    } 
+    
+    else if (strncmp(line, "CONNECTION:", 11) == 0) {
+      // update connection
       tft.fillRect(100, 0, 220, 21, BLACK);
       tft.setCursor(100, 0);
       tft.setTextSize(2);
       tft.setTextColor(WHITE);
-      tft.print(line + 7);  
-    } else if (strncmp(line, "CLIP:", 5) == 0) {
+      tft.print(line + 11);
+    } 
+    
+    else if (strncmp(line, "WINDOW:", 7) == 0) {
+      //update active window
+      strncpy(windowBuffer, line + 7, sizeof(windowBuffer));
+      if (menuState == 1 || menuState == 0){
+        drawActiveWindow();
+      }
+    } 
+    
+    else if (strncmp(line, "CLIP:", 5) == 0) {
       strncpy(clipBuffer, line, sizeof(clipBuffer));  //namen speichern in puffer
       if (menuState != 1) {
         drawClipMenu();
       }
-    } else if (strncmp(line, "TRACK:", 6) == 0) {
+    } 
+    
+    else if (strncmp(line, "TRACK:", 6) == 0) {
       // Trackname updaten
       strncpy(trackBuffer, line, sizeof(trackBuffer));  //namen speichern in puffer
       trackBuffer[sizeof(trackBuffer) - 1] = '\0';      // sicherstellen, dass es keinen overflow gibt
 
       if (menuState == 0) {
-        tft.fillRoundRect(5, 21, 310, 104, 15, GREY);
-        drawWrappedText(line + 6,
-                        10,   // abstand Links
-                        28,   // Start-Y
-                        310,  // rechtes Limit
-                        WHITE,
-                        2);  // Textgröße
+        drawMediaUI();
       }
     }
+
+  }
+}
+void drawBottomControls(){
+  //bottom bar
+  //Volume
+  tft.fillRoundRect(5, 185, 215, 50, 15, GREYBLUE);
+  tft.setCursor(10, 200);
+  tft.setTextColor(CYAN);
+  tft.print("Volume");
+  volupButton.drawButton();
+  voldownButton.drawButton();
+  volumeLabel.drawButton();
+  //APPS button
+  tft.fillRoundRect(225, 185, 90, 50, 15, GREYGREEN);
+  appsMenu.drawButton();
+}
+void drawActiveWindow() {
+      tft.fillRoundRect(6, 22, 318, 28, 15, BLACK);
+      tft.drawRoundRect(5, 21, 310, 30, 15, GREY);
+      tft.setCursor(13, 28);
+      tft.setTextSize(2);
+      tft.setTextColor(WHITE);
+      tft.print(windowBuffer);
+      if(windowBuffer == ""){
+        tft.print("Loading...");
+      }
+}
+void drawMediaUI() {
+  char *fullText = trackBuffer + 6;
+  char *separator = strchr(fullText, '|');
+
+  tft.fillRoundRect(5, 70, 310, 55, 15, GREY);
+
+  if (separator != NULL) {
+    // Temporarily replace '|' with a null terminator '\0' to "cut" the string
+    *separator = '\0';
+
+    char *trackName = fullText;
+    char *artistName = separator + 1;
+    if (strlen(trackName) > 25) {
+      trackName[25] = '\0';  // Hard cut at 25 characters
+    }
+    if (strlen(artistName) > 25) {
+      artistName[25] = '\0';  // Hard cut at 25 characters
+    }
+    drawWrappedText(trackName, 10, 78, 310, WHITE, 2);
+    drawWrappedText(artistName, 10, 100, 310, CYAN, 2);
+
+    *separator = '|';
+  } else {
+    drawWrappedText(fullText, 10, 78, 310, WHITE, 2);
   }
 }
 void checkButtonPressed(Elegoo_GFX_Button &btn, int x, int y, const char *action) {
