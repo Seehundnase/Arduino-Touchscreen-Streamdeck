@@ -171,6 +171,9 @@ async def active_window_loop():
 
 def main_loop():
     """main loop"""
+    time.sleep(3)
+    send_serial_line("STATUS", "initialized")
+    time.sleep(.2)
     loop = asyncio.get_event_loop()
     asyncio.ensure_future(media_loop())
     asyncio.ensure_future(active_window_loop())
