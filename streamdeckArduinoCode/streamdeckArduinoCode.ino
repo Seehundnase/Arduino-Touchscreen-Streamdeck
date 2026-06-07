@@ -72,6 +72,7 @@ int len;
 //1 = appMenu
 //2 = clipboard
 unsigned int menuState = 0;
+int connected = 0;
 
 char trackBuffer[200];  //buffer for track name
 int trackLen = 0;
@@ -118,8 +119,7 @@ void setup() {
   calculator.initButton(&tft, 265, 155, 90, 40, BLACK, BLUE, WHITE, "Calc", 2);
 
   //draw home screen
-  drawHomeScreen();
-  drawBottomControls();
+  drawWaitingInfo();
 }
 void loop() {
 
@@ -176,8 +176,9 @@ void drawHomeScreen() {
 }
 
 void drawAppMenu() {
-  drawActiveWindow();
   menuState = 1;
+  tft.fillRect(0, 21, 320, 161, BLACK);
+  drawActiveWindow();
   tft.fillRoundRect(5, 60, 310, 120, 15, GREYGREEN);
   tft.setTextColor(GREEN);
   tft.setCursor(130, 65);
@@ -203,6 +204,12 @@ void drawClipMenu() {
                   310,  // rechtes Limit
                   WHITE,
                   2);  // Textgröße
+}
+void drawWaitingInfo(){
+  tft.setTextSize(2);
+  tft.setCursor(25, 115);
+  tft.setTextColor(WHITE);
+  tft.print("waiting for python...");
 }
 void handleSerial() {
   if (Serial.available()) {
@@ -251,6 +258,11 @@ void handleSerial() {
       if (menuState == 0) {
         drawMediaUI();
       }
+    }
+    else if (strncmp(line, "STATUS:", 7) == 0) {
+      drawHomeScreen();
+      drawBottomControls();
+      connected = 1;
     }
 
   }
